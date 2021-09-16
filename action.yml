@@ -20,10 +20,12 @@ inputs:
 runs:
   using: composite
   steps:
+    - shell: bash
+      run: cat ${{ github.action_path }}/scripts/package-lock.json
     - uses: actions/setup-node@v2
       with:
         node-version: '16'
-        cache: 'npm'
+        # cache: 'npm'
         # cache-dependency-path: ${{ github.action_path }}/scripts/package-lock.json
     - name: Install prerequisites
       shell: bash
