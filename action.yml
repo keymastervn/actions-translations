@@ -1,0 +1,34 @@
+name: 'Translations actions'
+description: 'Here we run Actions for translations such as push/pull with/without email templates.'
+inputs:
+  trigger-type:
+    description: "The type of a action: either `push' or `pull'. The default value is `push'."
+    default: push
+    required: true
+  project-type:
+    description: "The type of a project: either `i18n' or `documents'. The default value is `i18n'."
+    default: i18n
+    required: true
+  create-pr:
+    description: 'When pulling translation from the dedicated service, this option allows creating a PR to the service repository.'
+    default: false
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+        cache: 'npm'
+        cache-dependency-path: scripts/package-lock.json
+    - name: Install prerequisites
+      run: |
+        npm i -g zx
+        npm i form-data
+    - name: Run push
+      run: zx ./scripts/${{ inputs.trigger-type }}_${{ inputs.project-type }}.mjs
+      env:
+        SERVICE_HOST: ${{ secrets.SERVICE_HOST }}
+    # - name: Run create PR
+
