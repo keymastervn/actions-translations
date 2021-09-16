@@ -30,8 +30,7 @@ runs:
     - name: Install prerequisites
       shell: bash
       run: |
-        npm i -g zx
-        npm i form-data
+        npm i -g zx form-data
     - name: Run push
       shell: bash
       run: zx ${{ github.action_path }}/scripts/${{ inputs.trigger-type }}_${{ inputs.project-type }}.mjs
