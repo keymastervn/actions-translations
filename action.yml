@@ -1,6 +1,9 @@
 name: 'Translations actions'
 description: 'Here we run Actions for translations such as push/pull with/without email templates.'
 inputs:
+  service-host:
+    description: 'Translation service endpoint'
+    required: true
   trigger-type:
     description: "The type of a action: either `push' or `pull'. The default value is `push'."
     default: push
@@ -29,6 +32,6 @@ runs:
       shell: bash
       run: zx ${{ github.action_path }}/scripts/${{ inputs.trigger-type }}_${{ inputs.project-type }}.mjs
       env:
-        SERVICE_HOST: https://translation-distribution.staging.ehrocks.com
+        SERVICE_HOST: ${{ inputs.service-host }}
     # - name: Run create PR
 
