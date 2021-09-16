@@ -5,7 +5,7 @@ const FormData = require('form-data');
 let config;
 
 try {
-  config = await fs.readJson(`.translation/config-documents.json`)
+  config = await fs.readJson(`${process.env.GITHUB_WORKSPACE}/.translation/config-documents.json`)
 } catch (error) {
   console.error(`x ${chalk.red(error)}`);
 
