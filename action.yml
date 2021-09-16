@@ -17,19 +17,20 @@ inputs:
 runs:
   using: composite
   steps:
-    - shell: bash
     - uses: actions/setup-node@v2
       with:
         node-version: '16'
         cache: 'npm'
         cache-dependency-path: scripts/package-lock.json
     - name: Install prerequisites
+      shell: bash
       run: |
         npm i -g zx
         npm i form-data
     - name: Run push
+      shell: bash
       run: zx ./scripts/${{ inputs.trigger-type }}_${{ inputs.project-type }}.mjs
       env:
-        SERVICE_HOST: ${{ secrets.SERVICE_HOST }}
+        SERVICE_HOST: https://translation-distribution.staging.ehrocks.com
     # - name: Run create PR
 
