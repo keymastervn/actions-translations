@@ -27,7 +27,7 @@ runs:
         npm i form-data
     - name: Run push
       shell: bash
-      run: zx ./scripts/${{ inputs.trigger-type }}_${{ inputs.project-type }}.mjs
+      run: zx ${{ github.action_path }}/scripts/${{ inputs.trigger-type }}_${{ inputs.project-type }}.mjs
       env:
         SERVICE_HOST: https://translation-distribution.staging.ehrocks.com
     # - name: Run create PR
