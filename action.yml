@@ -18,20 +18,17 @@ inputs:
     required: false
 
 runs:
-  using: composite
+  using: "composite"
   steps:
     - uses: actions/setup-node@v2
       with:
         node-version: '16'
-        # cache: 'npm'
-        # cache-dependency-path: ${{ github.action_path }}/scripts/package-lock.json
+        cache: 'npm'
+        cache-dependency-path: ${{ github.action_path }}/package-lock.json
     - name: Install prerequisites
       shell: bash
       run: npm i zx@4.2.0 form-data@4.0.0
-    - name: Run push
+    - run: npx zx ${{ github.action_path }}/scripts/${{ inputs.trigger-type }}_${{ inputs.project-type }}.mjs
       shell: bash
-      run: npx zx ${{ github.action_path }}/scripts/${{ inputs.trigger-type }}_${{ inputs.project-type }}.mjs
       env:
         SERVICE_HOST: ${{ inputs.service-host }}
-    # - name: Run create PR
-
