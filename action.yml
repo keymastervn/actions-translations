@@ -23,6 +23,8 @@ runs:
     - uses: actions/setup-node@v2
       with:
         node-version: '16'
+        cache: 'npm'
+        cache-dependency-path: ${{ github.action_path }}/translation/scripts/package-lock.json
     - name: Install prerequisites
       shell: bash
       run: |
