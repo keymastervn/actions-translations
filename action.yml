@@ -27,10 +27,11 @@ runs:
         # cache-dependency-path: ${{ github.action_path }}/scripts/package-lock.json
     - name: Install prerequisites
       shell: bash
-      run: npm i -g zx@4.2.0 form-data@4.0.0
+      run: npm i -g zx@4.2.0
+    - run: npm i form-data@4.0.0
     - name: Run push
-      shell: bash
-      run: zx ${{ github.action_path }}/scripts/${{ inputs.trigger-type }}_${{ inputs.project-type }}.mjs
+      shell: zx
+      run: ${{ github.action_path }}/scripts/${{ inputs.trigger-type }}_${{ inputs.project-type }}.mjs
       env:
         SERVICE_HOST: ${{ inputs.service-host }}
     # - name: Run create PR
