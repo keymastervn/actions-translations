@@ -29,6 +29,7 @@ runs:
       shell: bash
       run: npm i -g zx@4.2.0
     - run: npm i form-data@4.0.0
+      shell: bash
     - name: Run push
       shell: zx
       run: ${{ github.action_path }}/scripts/${{ inputs.trigger-type }}_${{ inputs.project-type }}.mjs
