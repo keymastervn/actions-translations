@@ -24,12 +24,12 @@ runs:
       with:
         node-version: '16'
         cache: 'npm'
-        cache-dependency-path: ${{ github.action_path }}/scripts/package-lock.json
-    # - name: Install prerequisites
-    #   shell: bash
-    #   run: |
-    #     npm i -g zx
-    #     npm i form-data
+        # cache-dependency-path: ${{ github.action_path }}/scripts/package-lock.json
+    - name: Install prerequisites
+      shell: bash
+      run: |
+        npm i -g zx
+        npm i form-data
     - name: Run push
       shell: bash
       run: zx ${{ github.action_path }}/scripts/${{ inputs.trigger-type }}_${{ inputs.project-type }}.mjs
