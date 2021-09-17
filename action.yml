@@ -12,6 +12,10 @@ inputs:
     description: "The type of a project: either `i18n' or `documents'. The default value is `i18n'."
     default: i18n
     required: true
+  translation-service-token:
+    description: 'Bearer token'
+    default: false
+    required: true
   create-pr:
     description: 'When pulling translation from the dedicated service, this option allows creating a PR to the service repository.'
     default: false
@@ -36,6 +40,7 @@ runs:
       shell: bash
       env:
         SERVICE_HOST: ${{ inputs.service-host }}
+        TRANSLATION_SERVICE_API_TOKEN: ${{ inputs.translation-service-token }}
     - id: current
       if: ${{ success() }}
       run: echo "::set-output name=YmdHMS::$(date +'%Y%m%dT%H%M%S')"
