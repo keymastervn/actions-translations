@@ -16,18 +16,9 @@ inputs:
     description: 'Bearer token'
     default: false
     required: true
-  create-pr:
-    description: 'When pulling translation from the dedicated service, this option allows creating a PR to the service repository.'
-    default: false
-    required: false
-  github-token:
-    description: 'When pulling translation from the dedicated service, this option allows creating a PR to the service repository.'
-    default: false
-    required: false
 
 runs:
   using: "composite"
-  shell: bash
   steps:
     - uses: actions/setup-node@v2
       with:
@@ -35,29 +26,10 @@ runs:
         # cache: 'npm'
         # cache-dependency-path: ${{ github.action_path }}/package-lock.json
     - name: Install prerequisites
+      shell: bash
       run: npm i zx@4.2.0 form-data@4.0.0
     - run: npx zx ${{ github.action_path }}/scripts/${{ inputs.trigger-type }}_${{ inputs.project-type }}.mjs
+      shell: bash
       env:
         SERVICE_HOST: ${{ inputs.service-host }}
         TRANSLATION_SERVICE_API_TOKEN: ${{ inputs.translation-service-token }}
-    - id: current
-      run: echo "::set-output name=YmdHMS::$(date +'%Y%m%dT%H%M%S')"
-    - id: string_case
-      uses: ASzc/change-string-case-action@v1
-      with:
-        string: ${{ inputs.trigger-type }}
-    - name: Create a branch
-      run: |
-        git config user.name github-actions
-        git config user.email github-actions@github.com
-        git checkout -b "chore/${{ inputs.trigger-type }}-translation/${{ steps.current.outputs.YmdHMS }}"
-        git add .
-        git commit -m "${{ steps.string_case.outputs.capitalized }} translations ${{ github.event.inputs.repository }} ${{ steps.current.outputs.YmdHMS }}"
-        git push --set-upstream origin "chore/${{ inputs.trigger-type }}-translation/${{ steps.current.outputs.YmdHMS }}"
-    - name: Create PR
-      if: ${{ inputs.create-pr == 'true' }}
-      uses: repo-sync/pull-request@v2
-      with:
-        source_branch: chore/pull-translation/${{ steps.current.outputs.YmdHMS }}
-        pr_title: "Chore/${{ steps.string_case.outputs.capitalized }} translations ${{ steps.current.outputs.YmdHMS }}"
-        github_token: ${{ inputs.github-token }}
