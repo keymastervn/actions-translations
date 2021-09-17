@@ -24,12 +24,13 @@ paths.forEach(path => {
 async function uploadLocaleFiles(locale, path) {
   const file = path.replace('{{locale}}', locale);
   const fileName = file.split('/').pop();
+  const workspaceFile = `${process.env.GITHUB_WORKSPACE}/${file}`;
 
   const form = new FormData();
 
   form.append('project_external_id', project_external_id);
   form.append('file_name', file);
-  form.append('file', fs.createReadStream(file), fileName);
+  form.append('file', fs.createReadStream(workspaceFile), fileName);
   form.append('locale', locale);
 
   await fetch(`${serviceHost}/api/v1/translations/upload_base_locale`,

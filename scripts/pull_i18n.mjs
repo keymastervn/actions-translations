@@ -26,6 +26,7 @@ paths.forEach(path => {
 async function downloadLocaleFiles(locale, path) {
   const file = path.replace('{{locale}}', locale);
   const fileName = file.split('/').pop();
+  const workspaceFile = `${process.env.GITHUB_WORKSPACE}/${file}`;
 
   const params = {
     'project_external_id': project_external_id,
@@ -48,5 +49,5 @@ async function downloadLocaleFiles(locale, path) {
   const streamPipeline = promisify(pipeline);
   const downloadRequest = await fetch(url);
   if (!downloadRequest.ok) throw new Error(`unexpected response ${downloadRequest.statusText}`);
-  await streamPipeline(downloadRequest.body, fs.createWriteStream(file));
+  await streamPipeline(downloadRequest.body, fs.createWriteStream(workspaceFile));
 }

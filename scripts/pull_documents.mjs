@@ -28,7 +28,8 @@ async function downloadLocaleFiles(locale, path, blank_default_locale = true) {
   //  true: template.html.haml
   //  false: template.en-AU.html.haml
   const file = path.replace('{{locale}}', blank_default_locale ? '' : `.${locale}`);
-  const fileName = file
+  const fileName = file;
+  const workspaceFile = `${process.env.GITHUB_WORKSPACE}/${file}`;
 
   const params = {
     'project_external_id': project_external_id,
@@ -59,5 +60,5 @@ async function downloadLocaleFiles(locale, path, blank_default_locale = true) {
     console.error(`${fileName}:${locale}: cannot download file`);
     return;
   }
-  await streamPipeline(downloadRequest.body, fs.createWriteStream(file));
+  await streamPipeline(downloadRequest.body, fs.createWriteStream(workspaceFile));
 }
