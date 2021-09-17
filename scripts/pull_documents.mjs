@@ -60,5 +60,7 @@ async function downloadLocaleFiles(locale, path, blank_default_locale = true) {
     console.error(`${fileName}:${locale}: cannot download file`);
     return;
   }
+
+  console.log(`Downloading ${file} to ${workspaceFile}`);
   await streamPipeline(downloadRequest.body, fs.createWriteStream(workspaceFile));
 }

@@ -49,5 +49,7 @@ async function downloadLocaleFiles(locale, path) {
   const streamPipeline = promisify(pipeline);
   const downloadRequest = await fetch(url);
   if (!downloadRequest.ok) throw new Error(`unexpected response ${downloadRequest.statusText}`);
+
+  console.log(`Downloading ${file} to ${workspaceFile}`);
   await streamPipeline(downloadRequest.body, fs.createWriteStream(workspaceFile));
 }

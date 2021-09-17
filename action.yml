@@ -27,7 +27,7 @@ runs:
         # cache-dependency-path: ${{ github.action_path }}/package-lock.json
     - name: Install prerequisites
       shell: bash
-      run: npm i zx@4.2.0 form-data@4.0.0
+      run: npm i --prefix ${{ github.action_path }} zx@4.2.0 form-data@4.0.0
     - run: npx zx ${{ github.action_path }}/scripts/${{ inputs.trigger-type }}_${{ inputs.project-type }}.mjs
       shell: bash
       env:
