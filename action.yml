@@ -32,3 +32,25 @@ runs:
       shell: bash
       env:
         SERVICE_HOST: ${{ inputs.service-host }}
+    - id: current
+      if: ${{ success() }}
+      run: echo "::set-output name=YmdHMS::$(date +'%Y%m%dT%H%M%S')"
+    - id: string_case
+      uses: ASzc/change-string-case-action@v1
+      with:
+        string: ${{ inputs.trigger-type }}
+    - name: Create a branch
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git checkout -b "chore/${{ inputs.trigger-type }}-translation/${{ steps.current.outputs.YmdHMS }}"
+        git add .
+        git commit -m "${{ steps.string_case.outputs.capitalized }} translations ${{ github.event.inputs.repository }} ${{ steps.current.outputs.YmdHMS }}"
+        git push --set-upstream origin "chore/${{ inputs.trigger-type }}-translation/${{ steps.current.outputs.YmdHMS }}"
+    - name: Create PR
+      if: ${{ ${{ github.event.inputs.create-pr == 'true' }}
+      uses: repo-sync/pull-request@v2
+      with:
+        source_branch: chore/pull-translation/${{ steps.current.outputs.YmdHMS }}
+        pr_title: "Chore/${{ steps.string_case.outputs.capitalized }} translations ${{ steps.current.outputs.YmdHMS }}"
+        github_token: ${{ secrets.TRANSLATION_GITHUB_ACCESS_TOKEN }}
