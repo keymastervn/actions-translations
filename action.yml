@@ -30,6 +30,7 @@ runs:
       run: npm i zx@4.2.0 form-data@4.0.0
     - run: npx zx ${{ github.action_path }}/scripts/${{ inputs.trigger-type }}_${{ inputs.project-type }}.mjs
       shell: bash
+      working-directory: ${{ github.workspace }}
       env:
         SERVICE_HOST: ${{ inputs.service-host }}
         TRANSLATION_SERVICE_API_TOKEN: ${{ inputs.translation-service-token }}
